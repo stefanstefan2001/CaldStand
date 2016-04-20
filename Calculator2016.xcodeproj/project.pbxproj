@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AFA9D6461CC756B200F3E2BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA9D6451CC756B200F3E2BA /* AppDelegate.swift */; };
-		AFA9D6481CC756B200F3E2BA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA9D6471CC756B200F3E2BA /* ViewController.swift */; };
+		AFA9D6481CC756B200F3E2BA /* CalculatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA9D6471CC756B200F3E2BA /* CalculatorViewController.swift */; };
 		AFA9D64B1CC756B200F3E2BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFA9D6491CC756B200F3E2BA /* Main.storyboard */; };
 		AFA9D64D1CC756B200F3E2BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFA9D64C1CC756B200F3E2BA /* Assets.xcassets */; };
 		AFA9D6501CC756B200F3E2BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFA9D64E1CC756B200F3E2BA /* LaunchScreen.storyboard */; };
@@ -17,7 +17,7 @@
 /* Begin PBXFileReference section */
 		AFA9D6421CC756B200F3E2BA /* Calculator2016.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculator2016.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFA9D6451CC756B200F3E2BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		AFA9D6471CC756B200F3E2BA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		AFA9D6471CC756B200F3E2BA /* CalculatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewController.swift; sourceTree = "<group>"; };
 		AFA9D64A1CC756B200F3E2BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AFA9D64C1CC756B200F3E2BA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AFA9D64F1CC756B200F3E2BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -35,6 +35,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AF4D53E71CC7A1C000FCC88D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AFA9D6451CC756B200F3E2BA /* AppDelegate.swift */,
+				AFA9D64C1CC756B200F3E2BA /* Assets.xcassets */,
+				AFA9D64E1CC756B200F3E2BA /* LaunchScreen.storyboard */,
+				AFA9D6511CC756B200F3E2BA /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		AFA9D6391CC756B200F3E2BA = {
 			isa = PBXGroup;
 			children = (
@@ -54,12 +65,9 @@
 		AFA9D6441CC756B200F3E2BA /* Calculator2016 */ = {
 			isa = PBXGroup;
 			children = (
-				AFA9D6451CC756B200F3E2BA /* AppDelegate.swift */,
-				AFA9D6471CC756B200F3E2BA /* ViewController.swift */,
+				AFA9D6471CC756B200F3E2BA /* CalculatorViewController.swift */,
 				AFA9D6491CC756B200F3E2BA /* Main.storyboard */,
-				AFA9D64C1CC756B200F3E2BA /* Assets.xcassets */,
-				AFA9D64E1CC756B200F3E2BA /* LaunchScreen.storyboard */,
-				AFA9D6511CC756B200F3E2BA /* Info.plist */,
+				AF4D53E71CC7A1C000FCC88D /* Supporting Files */,
 			);
 			path = Calculator2016;
 			sourceTree = "<group>";
@@ -136,7 +144,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AFA9D6481CC756B200F3E2BA /* ViewController.swift in Sources */,
+				AFA9D6481CC756B200F3E2BA /* CalculatorViewController.swift in Sources */,
 				AFA9D6461CC756B200F3E2BA /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -252,7 +260,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = Calculator2016/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.stefan.Calculator2016;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -263,7 +273,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = Calculator2016/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.stefan.Calculator2016;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -289,6 +301,7 @@
 				AFA9D6561CC756B200F3E2BA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
