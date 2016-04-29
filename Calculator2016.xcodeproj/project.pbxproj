@@ -12,6 +12,7 @@
 		AFA9D64B1CC756B200F3E2BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFA9D6491CC756B200F3E2BA /* Main.storyboard */; };
 		AFA9D64D1CC756B200F3E2BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFA9D64C1CC756B200F3E2BA /* Assets.xcassets */; };
 		AFA9D6501CC756B200F3E2BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFA9D64E1CC756B200F3E2BA /* LaunchScreen.storyboard */; };
+		AFC0B7EA1CD3514900F2D373 /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC0B7E91CD3514900F2D373 /* CalculatorBrain.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		AFA9D64C1CC756B200F3E2BA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AFA9D64F1CC756B200F3E2BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AFA9D6511CC756B200F3E2BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AFC0B7E91CD3514900F2D373 /* CalculatorBrain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorBrain.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 			children = (
 				AFA9D6471CC756B200F3E2BA /* CalculatorViewController.swift */,
 				AFA9D6491CC756B200F3E2BA /* Main.storyboard */,
+				AFC0B7E91CD3514900F2D373 /* CalculatorBrain.swift */,
 				AF4D53E71CC7A1C000FCC88D /* Supporting Files */,
 			);
 			path = Calculator2016;
@@ -144,6 +147,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AFC0B7EA1CD3514900F2D373 /* CalculatorBrain.swift in Sources */,
 				AFA9D6481CC756B200F3E2BA /* CalculatorViewController.swift in Sources */,
 				AFA9D6461CC756B200F3E2BA /* AppDelegate.swift in Sources */,
 			);
