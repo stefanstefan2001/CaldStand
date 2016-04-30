@@ -53,6 +53,7 @@ class CalculatorBrain {
     
     private var opStack : [Op] = []
     
+    //TODO: Right now this isn't working as intended, it might need to be done from scrach
     var description: String{
         var result: String = " "
         for op in opStack{
