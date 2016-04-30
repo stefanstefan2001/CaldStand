@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -80,14 +79,6 @@
                                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                                     </button>
                                                 </subviews>
-                                                <constraints>
-                                                    <constraint firstItem="XlV-dv-lPU" firstAttribute="firstBaseline" secondItem="Lxb-tU-lRD" secondAttribute="firstBaseline" id="Oic-4F-8AB"/>
-                                                    <constraint firstItem="sZe-ja-vty" firstAttribute="firstBaseline" secondItem="XlV-dv-lPU" secondAttribute="firstBaseline" id="OlR-kR-jlH"/>
-                                                    <constraint firstItem="Lxb-tU-lRD" firstAttribute="baseline" secondItem="sZe-ja-vty" secondAttribute="baseline" id="QMY-qQ-qwn"/>
-                                                    <constraint firstItem="sZe-ja-vty" firstAttribute="firstBaseline" secondItem="Lxb-tU-lRD" secondAttribute="firstBaseline" id="rMT-wa-B9B"/>
-                                                    <constraint firstItem="XlV-dv-lPU" firstAttribute="baseline" secondItem="sZe-ja-vty" secondAttribute="baseline" id="ufP-qs-sqt"/>
-                                                    <constraint firstItem="Lxb-tU-lRD" firstAttribute="baseline" secondItem="XlV-dv-lPU" secondAttribute="baseline" id="z74-AR-Ao0"/>
-                                                </constraints>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="tBb-rx-YLE">
                                                 <rect key="frame" x="0.0" y="81" width="560" height="71"/>
@@ -342,9 +333,6 @@
                                         </subviews>
                                     </stackView>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="40b-S6-643" firstAttribute="top" secondItem="rZg-k6-b6n" secondAttribute="top" constant="89" id="xpp-US-6v6"/>
-                                </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
