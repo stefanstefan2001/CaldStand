@@ -17,6 +17,7 @@ class CalculatorBrain {
     func setOperand(operand: Double){
         accumulator = operand
         internalProgram.append(operand)
+        opStack.append(Op.Operand(operand))
     }
     
     private var operations: [String:Operation] = [
@@ -25,23 +26,65 @@ class CalculatorBrain {
         "√" : Operation.UnaryOperation(sqrt),
         "ᐩ/-": Operation.UnaryOperation { -$0 },
         "cos" : Operation.UnaryOperation(cos),
+        "sin" : Operation.UnaryOperation(sin),
+        "tan" : Operation.UnaryOperation(tan),
+        "%" : Operation.UnaryOperation { $0 / 100},
+        "log₁₀" : Operation.UnaryOperation(log10),
         "×" : Operation.BinaryOperation(*),
         "÷" : Operation.BinaryOperation(/),
         "+" : Operation.BinaryOperation(+),
         "−" : Operation.BinaryOperation(-),
-        "=" : Operation.Equals
-        ]
+        "=" : Operation.Equals,
+        "rand" : Operation.RandomNumber(Double.random)
+    ]
     
     private enum Operation {
         case Constant(Double)
         case UnaryOperation((Double) -> Double)
         case BinaryOperation((Double,Double) -> Double)
+        case RandomNumber(Double)
         case Equals
     }
     
+    private enum Op{
+        case Operand(Double)
+        case Operation(CalculatorBrain.Operation,String)
+    }
+    
+    private var opStack : [Op] = []
+    
+    var description: String{
+        var result: String = " "
+        for op in opStack{
+            switch op {
+            case .Operand(let value):
+                let numberFormatter = NSNumberFormatter()
+                numberFormatter.maximumFractionDigits = 6
+                numberFormatter.minimumIntegerDigits = 1
+                
+                let numberString = numberFormatter.stringFromNumber(value)!
+                result += numberString + " "
+                
+            case .Operation(let kind, let operation):
+                switch kind {
+                case .Equals: continue
+                default: break
+                }
+                result += operation + " "
+            }
+        }
+        
+        
+        return result
+    }
+    
+    
     func performOperation(symbol: String){
         if let operation = operations[symbol]{
+            
+            opStack.append(Op.Operation(operation,symbol))
             internalProgram.append(symbol)
+            
             switch operation {
             case .Constant(let value):
                 accumulator = value
@@ -52,6 +95,8 @@ class CalculatorBrain {
                 pending = PendingBinaryOperationInfo(binaryFunciton: function, firstOperand: accumulator)
             case .Equals :
                 executePendingBinaryOperation()
+            case .RandomNumber(let value):
+                accumulator = value
             }
         }
     }
@@ -68,6 +113,10 @@ class CalculatorBrain {
     private struct PendingBinaryOperationInfo{
         var binaryFunciton: (Double,Double) -> Double
         var firstOperand: Double
+    }
+    
+    var isPartialResult: Bool{
+        return pending != nil ? true : false
     }
     
     typealias PropertyList = AnyObject
@@ -93,11 +142,19 @@ class CalculatorBrain {
         accumulator = 0
         pending = nil
         internalProgram.removeAll()
+        opStack.removeAll()
     }
     
     var result: Double{
         get{
             return accumulator
         }
+    }
+}
+
+public extension Double {
+    /// Returns a random floating point number between 0.0 and 1.0, inclusive.
+    public static var random : Double {
+        return Double(arc4random()) / 0xFFFFFFFF
     }
 }
