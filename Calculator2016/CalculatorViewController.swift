@@ -18,7 +18,7 @@ class CalculatorViewController: UIViewController {
     @IBAction private func touchDigit(sender: UIButton) {
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTyping{
-            // If the user taps the period and there is a period in the display do nothing
+            // If the user taps the period and there is a period in the display then do nothing
             if (digit == ".") && (display.text?.rangeOfString(".") != nil ) { return }
             display.text! += digit
         }else{
@@ -68,6 +68,7 @@ class CalculatorViewController: UIViewController {
             }
         }
     }
+    
     @IBAction private func performOperation(sender: UIButton) {
         if userIsInTheMiddleOfTyping{
             if let value = displayValue{

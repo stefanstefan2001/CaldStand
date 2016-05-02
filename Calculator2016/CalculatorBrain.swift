@@ -69,11 +69,9 @@ class CalculatorBrain {
             case .Operation(let kind, let operation):
                 switch kind {
                 case .Equals:
-                    if pending != nil {
-                        result += " \(result)"
-                    }
+                    break
                 case .UnaryOperation:
-                    result = operation + "(\(result))"
+                    result = operation + "(\(result)) "
                 default:
                     result += operation + " "
                 }
