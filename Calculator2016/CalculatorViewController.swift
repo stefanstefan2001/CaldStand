@@ -38,18 +38,19 @@ class CalculatorViewController: UIViewController {
         }
     }
     
-    private let brain = CalculatorBrain()
+    private var brain = CalculatorBrain()
     
     private var brainDescription: String {
         var description = brain.description
-        if brain.isPartialResult{
+        if brain.isOperationPending{
             description += " ..."
         }
         return description
+        
     }
     
     @IBAction private func clear() {
-        brain.clear()
+        brain = CalculatorBrain()
         displayValue = 0
         descriptionLabel.text = " "
         userIsInTheMiddleOfTyping = false
@@ -86,9 +87,7 @@ class CalculatorViewController: UIViewController {
             }
         }
         
-        
         displayValue = brain.result
         
     }
 }
-

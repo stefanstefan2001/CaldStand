@@ -15,6 +15,19 @@
 		AFC0B7EA1CD3514900F2D373 /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC0B7E91CD3514900F2D373 /* CalculatorBrain.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		AF5A4A291CD8C53C00807473 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		AFA9D6421CC756B200F3E2BA /* Calculator2016.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculator2016.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFA9D6451CC756B200F3E2BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +98,7 @@
 				AFA9D63E1CC756B200F3E2BA /* Sources */,
 				AFA9D63F1CC756B200F3E2BA /* Frameworks */,
 				AFA9D6401CC756B200F3E2BA /* Resources */,
+				AF5A4A291CD8C53C00807473 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

@@ -8,157 +8,128 @@
 
 import Foundation
 
+func factorial(op1: Double) -> Double {
+    if (op1 <= 1) {
+        return 1
+    }
+    return op1 * factorial(op1 - 1)
+}
+
 class CalculatorBrain {
-    
     private var accumulator = 0.0
     
-    private var internalProgram = [AnyObject]()
-    
-    func setOperand(operand: Double){
+    func setOperand(operand: Double) {
         accumulator = operand
-        internalProgram.append(operand)
-        opStack.append(Op.Operand(operand))
+        descriptionAccumulator = String(format:"%g", operand)
     }
     
-    private var operations: [String:Operation] = [
+    private var descriptionAccumulator = "0" {
+        didSet {
+            if pending == nil {
+                currentPrecedence = Int.max
+            }
+        }
+    }
+    
+    var description: String {
+        get {
+            if pending == nil {
+                return descriptionAccumulator
+            } else {
+                return pending!.descriptionFunction(pending!.descriptionOperand,
+                                                    pending!.descriptionOperand != descriptionAccumulator ? descriptionAccumulator : "")
+            }
+        }
+    }
+    
+    private var operations: Dictionary<String,Operation> = [
         "π" : Operation.Constant(M_PI),
         "e" : Operation.Constant(M_E),
-        "√" : Operation.UnaryOperation(sqrt),
-        "ᐩ/-": Operation.UnaryOperation { -$0 },
-        "cos" : Operation.UnaryOperation(cos),
-        "sin" : Operation.UnaryOperation(sin),
-        "tan" : Operation.UnaryOperation(tan),
-        "%" : Operation.UnaryOperation { $0 / 100},
-        "log₁₀" : Operation.UnaryOperation(log10),
-        "×" : Operation.BinaryOperation(*),
-        "÷" : Operation.BinaryOperation(/),
-        "+" : Operation.BinaryOperation(+),
-        "−" : Operation.BinaryOperation(-),
-        "=" : Operation.Equals,
-        "rand" : Operation.RandomNumber(Double.random)
+        "±" : Operation.UnaryOperation({ -$0 }, { "-(" + $0 + ")"}),
+        "√" : Operation.UnaryOperation(sqrt, { "√(" + $0 + ")"}),
+        "x²" : Operation.UnaryOperation({ pow($0, 2) }, { "(" + $0 + ")²"}),
+        "x³" : Operation.UnaryOperation({ pow($0, 3) }, { "(" + $0 + ")³"}),
+        "x⁻¹" : Operation.UnaryOperation({ 1 / $0 }, { "(" + $0 + ")⁻¹"}),
+        "sin" : Operation.UnaryOperation(sin, { "sin(" + $0 + ")"}),
+        "cos" : Operation.UnaryOperation(cos, { "cos(" + $0 + ")"}),
+        "tan" : Operation.UnaryOperation(tan, { "tan(" + $0 + ")"}),
+        "sinh" : Operation.UnaryOperation(sinh, { "sinh(" + $0 + ")"}),
+        "cosh" : Operation.UnaryOperation(cosh, { "cosh(" + $0 + ")"}),
+        "tanh" : Operation.UnaryOperation(tanh, { "tanh(" + $0 + ")"}),
+        "ln" : Operation.UnaryOperation(log, { "ln(" + $0 + ")"}),
+        "log₁₀" : Operation.UnaryOperation(log10, { "log(" + $0 + ")"}),
+        "eˣ" : Operation.UnaryOperation(exp, { "e^(" + $0 + ")"}),
+        "10ˣ" : Operation.UnaryOperation({ pow(10, $0) }, { "10^(" + $0 + ")"}),
+        "x!" : Operation.UnaryOperation(factorial, { "(" + $0 + ")!"}),
+        "×" : Operation.BinaryOperation(*, { $0 + " × " + $1 }, 1),
+        "÷" : Operation.BinaryOperation(/, { $0 + " ÷ " + $1 }, 1),
+        "+" : Operation.BinaryOperation(+, { $0 + " + " + $1 }, 0),
+        "-" : Operation.BinaryOperation(-, { $0 + " - " + $1 }, 0),
+        "xʸ" : Operation.BinaryOperation(pow, { $0 + " ^ " + $1 }, 2),
+        "rand" : Operation.NullaryOperation(drand48, "rand()"),
+        "=" : Operation.Equals
     ]
     
     private enum Operation {
         case Constant(Double)
-        case UnaryOperation((Double) -> Double)
-        case BinaryOperation((Double,Double) -> Double)
-        case RandomNumber(Double)
+        case UnaryOperation((Double) -> Double, (String) -> String)
+        case BinaryOperation((Double, Double) -> Double, (String, String) -> String, Int)
+        case NullaryOperation(() -> Double, String)
         case Equals
     }
     
-    private enum Op{
-        case Operand(Double)
-        case Operation(CalculatorBrain.Operation,String)
-    }
+    private var currentPrecedence = Int.max
     
-    private var opStack : [Op] = []
-    
-    //TODO: Right now this isn't working as intended, it might need to be done from scrach
-    var description: String{
-        var result: String = " "
-        for op in opStack{
-            switch op {
-            case .Operand(let value):
-                let numberFormatter = NSNumberFormatter()
-                numberFormatter.maximumFractionDigits = 6
-                numberFormatter.minimumIntegerDigits = 1
-                
-                let numberString = numberFormatter.stringFromNumber(value)!
-                result += numberString + " "
-                
-            case .Operation(let kind, let operation):
-                switch kind {
-                case .Equals:
-                    break
-                case .UnaryOperation:
-                    result = operation + "(\(result)) "
-                default:
-                    result += operation + " "
-                }
-            }
-        }
-        
-        
-        return result
-    }
-    
-    
-    func performOperation(symbol: String){
-        if let operation = operations[symbol]{
-            
-            opStack.append(Op.Operation(operation,symbol))
-            internalProgram.append(symbol)
-            
+    func performOperation(symbol: String) {
+        if let operation = operations[symbol] {
             switch operation {
             case .Constant(let value):
                 accumulator = value
-            case .UnaryOperation(let function):
+                descriptionAccumulator = symbol
+            case .NullaryOperation(let function, let descriptiveValue):
+                accumulator = function()
+                descriptionAccumulator = descriptiveValue
+            case .UnaryOperation(let function, let descriptionFunction):
                 accumulator = function(accumulator)
-            case .BinaryOperation(let function) :
+                descriptionAccumulator = descriptionFunction(descriptionAccumulator)
+            case .BinaryOperation(let function, let descriptionFunction, let precedence):
                 executePendingBinaryOperation()
-                pending = PendingBinaryOperationInfo(binaryFunciton: function, firstOperand: accumulator)
-            case .Equals :
+                if currentPrecedence < precedence {
+                    descriptionAccumulator = "(" + descriptionAccumulator + ")"
+                }
+                currentPrecedence = precedence
+                pending = PendingBinaryOperationInfo(binaryFunction: function, firstOperand: accumulator,
+                                                     descriptionFunction: descriptionFunction, descriptionOperand: descriptionAccumulator)
+            case .Equals:
                 executePendingBinaryOperation()
-            case .RandomNumber(let value):
-                accumulator = value
             }
         }
     }
     
-    private func executePendingBinaryOperation(){
-        if pending != nil{
-            accumulator = pending!.binaryFunciton(pending!.firstOperand,accumulator)
+    private func executePendingBinaryOperation() {
+        if pending != nil {
+            accumulator = pending!.binaryFunction(pending!.firstOperand, accumulator)
+            descriptionAccumulator = pending!.descriptionFunction(pending!.descriptionOperand, descriptionAccumulator)
             pending = nil
         }
     }
     
+    
     private var pending: PendingBinaryOperationInfo?
+    var isOperationPending: Bool{
+        return pending != nil
+    }
     
-    private struct PendingBinaryOperationInfo{
-        var binaryFunciton: (Double,Double) -> Double
+    private struct PendingBinaryOperationInfo {
+        var binaryFunction: (Double, Double) -> Double
         var firstOperand: Double
+        var descriptionFunction: (String, String) -> String
+        var descriptionOperand: String
     }
     
-    var isPartialResult: Bool{
-        return pending != nil ? true : false
-    }
-    
-    typealias PropertyList = AnyObject
-    
-    var program: PropertyList{
-        get{
-            return internalProgram
-        }set{
-            clear()
-            if let arrayOfOps = newValue as? [AnyObject]{
-                for op in arrayOfOps {
-                    if let operand = op as? Double{
-                        setOperand(operand)
-                    }else if let operation = op as? String{
-                        performOperation(operation)
-                    }
-                }
-            }
-        }
-    }
-    
-    func clear() {
-        accumulator = 0
-        pending = nil
-        internalProgram.removeAll()
-        opStack.removeAll()
-    }
-    
-    var result: Double{
-        get{
+    var result: Double {
+        get {
             return accumulator
         }
-    }
-}
-
-public extension Double {
-    /// Returns a random floating point number between 0.0 and 1.0, inclusive.
-    public static var random : Double {
-        return Double(arc4random()) / 0xFFFFFFFF
     }
 }
