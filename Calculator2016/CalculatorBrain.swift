@@ -18,8 +18,12 @@ func factorial(op1: Double) -> Double {
 class CalculatorBrain {
     private var accumulator = 0.0
     
+    private var internalProgram = [AnyObject]()
+    
     func setOperand(operand: Double) {
         accumulator = operand
+        internalProgram.append(operand)
+        
         descriptionAccumulator = String(format:"%g", operand)
     }
     
@@ -45,7 +49,7 @@ class CalculatorBrain {
     private var operations: Dictionary<String,Operation> = [
         "π" : Operation.Constant(M_PI),
         "e" : Operation.Constant(M_E),
-        "±" : Operation.UnaryOperation({ -$0 }, { "-(" + $0 + ")"}),
+        "ᐩ/-" : Operation.UnaryOperation({ -$0 }, { "-(" + $0 + ")"}),
         "√" : Operation.UnaryOperation(sqrt, { "√(" + $0 + ")"}),
         "x²" : Operation.UnaryOperation({ pow($0, 2) }, { "(" + $0 + ")²"}),
         "x³" : Operation.UnaryOperation({ pow($0, 3) }, { "(" + $0 + ")³"}),
@@ -64,7 +68,7 @@ class CalculatorBrain {
         "×" : Operation.BinaryOperation(*, { $0 + " × " + $1 }, 1),
         "÷" : Operation.BinaryOperation(/, { $0 + " ÷ " + $1 }, 1),
         "+" : Operation.BinaryOperation(+, { $0 + " + " + $1 }, 0),
-        "-" : Operation.BinaryOperation(-, { $0 + " - " + $1 }, 0),
+        "−" : Operation.BinaryOperation(-, { $0 + " - " + $1 }, 0),
         "xʸ" : Operation.BinaryOperation(pow, { $0 + " ^ " + $1 }, 2),
         "rand" : Operation.NullaryOperation(drand48, "rand()"),
         "=" : Operation.Equals
@@ -82,6 +86,8 @@ class CalculatorBrain {
     
     func performOperation(symbol: String) {
         if let operation = operations[symbol] {
+            internalProgram.append(symbol)
+            
             switch operation {
             case .Constant(let value):
                 accumulator = value
@@ -106,6 +112,12 @@ class CalculatorBrain {
         }
     }
     
+    func undo() {
+        guard internalProgram.count > 0 else { return }
+        internalProgram.removeLast()
+        program = internalProgram
+    }
+    
     private func executePendingBinaryOperation() {
         if pending != nil {
             accumulator = pending!.binaryFunction(pending!.firstOperand, accumulator)
@@ -118,6 +130,32 @@ class CalculatorBrain {
     private var pending: PendingBinaryOperationInfo?
     var isOperationPending: Bool{
         return pending != nil
+    }
+    
+    typealias PropertyList = AnyObject
+    
+    var program: PropertyList{
+        get{
+            return internalProgram
+        }set{
+            clear()
+            if let arrayOfOps = newValue as? [AnyObject]{
+                for op in arrayOfOps {
+                    if let operand = op as? Double{
+                        setOperand(operand)
+                    }else if let operation = op as? String{
+                        performOperation(operation)
+                    }
+                }
+            }
+        }
+    }
+    
+    func clear() {
+        accumulator = 0
+        pending = nil
+        descriptionAccumulator = " "
+        internalProgram.removeAll()
     }
     
     private struct PendingBinaryOperationInfo {

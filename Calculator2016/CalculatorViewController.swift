@@ -38,7 +38,7 @@ class CalculatorViewController: UIViewController {
         }
     }
     
-    private var brain = CalculatorBrain()
+    private let brain = CalculatorBrain()
     
     private var brainDescription: String {
         var description = brain.description
@@ -50,7 +50,7 @@ class CalculatorViewController: UIViewController {
     }
     
     @IBAction private func clear() {
-        brain = CalculatorBrain()
+        brain.clear()
         displayValue = 0
         descriptionLabel.text = " "
         userIsInTheMiddleOfTyping = false
@@ -67,6 +67,11 @@ class CalculatorViewController: UIViewController {
                 displayValue = 0
                 userIsInTheMiddleOfTyping = false
             }
+        }else{
+            brain.undo()
+            displayValue = brain.result
+            descriptionLabel.text = brainDescription
+
         }
     }
     
