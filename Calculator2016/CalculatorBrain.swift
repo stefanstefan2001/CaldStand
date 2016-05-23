@@ -32,12 +32,15 @@ class CalculatorBrain {
     private var operations: Dictionary<String,Operation> = [
         "π" : Operation.Constant(M_PI),
         "e" : Operation.Constant(M_E),
+        "%": Operation.UnaryOperation({$0 / 100}, {"(" + $0 + ")%"}),
         "ᐩ/-" : Operation.UnaryOperation({ -$0 }, { "-(" + $0 + ")"}),
-        "√" : Operation.UnaryOperation(sqrt, { "√(" + $0 + ")"}),
+        "²√" : Operation.UnaryOperation(sqrt, { "²√(" + $0 + ")"}),
+        "³√" : Operation.UnaryOperation(cbrt, { "³√(" + $0 + ")"}),
         "x²" : Operation.UnaryOperation({ pow($0, 2) }, { "(" + $0 + ")²"}),
         "x³" : Operation.UnaryOperation({ pow($0, 3) }, { "(" + $0 + ")³"}),
         "x⁻¹" : Operation.UnaryOperation({ 1 / $0 }, { "(" + $0 + ")⁻¹"}),
         "sin" : Operation.UnaryOperation(sin, { "sin(" + $0 + ")"}),
+        "2ˣ" : Operation.UnaryOperation({pow(2, $0)}, { "2^" + $0}),
         "cos" : Operation.UnaryOperation(cos, { "cos(" + $0 + ")"}),
         "tan" : Operation.UnaryOperation(tan, { "tan(" + $0 + ")"}),
         "sinh" : Operation.UnaryOperation(sinh, { "sinh(" + $0 + ")"}),
@@ -53,6 +56,7 @@ class CalculatorBrain {
         "+" : Operation.BinaryOperation(+, { $0 + " + " + $1 }, 0),
         "−" : Operation.BinaryOperation(-, { $0 + " - " + $1 }, 0),
         "xʸ" : Operation.BinaryOperation(pow, { $0 + " ^ " + $1 }, 2),
+        "yˣ" : Operation.BinaryOperation({pow($1, $0)}, { $1 + " ^ " + $0 }, 2),
         "rand" : Operation.NullaryOperation(drand48, "rand()"),
         "=" : Operation.Equals
     ]
