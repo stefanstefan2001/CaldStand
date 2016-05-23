@@ -20,28 +20,11 @@ class CalculatorBrain {
     
     private var internalProgram = [AnyObject]()
     
-    func setOperand(operand: Double) {
-        accumulator = operand
-        internalProgram.append(operand)
-        
-        descriptionAccumulator = String(format:"%g", operand)
-    }
     
     private var descriptionAccumulator = "0" {
         didSet {
             if pending == nil {
                 currentPrecedence = Int.max
-            }
-        }
-    }
-    
-    var description: String {
-        get {
-            if pending == nil {
-                return descriptionAccumulator
-            } else {
-                return pending!.descriptionFunction(pending!.descriptionOperand,
-                                                    pending!.descriptionOperand != descriptionAccumulator ? descriptionAccumulator : "")
             }
         }
     }
@@ -84,50 +67,16 @@ class CalculatorBrain {
     
     private var currentPrecedence = Int.max
     
-    func performOperation(symbol: String) {
-        if let operation = operations[symbol] {
-            internalProgram.append(symbol)
-            
-            switch operation {
-            case .Constant(let value):
-                accumulator = value
-                descriptionAccumulator = symbol
-            case .NullaryOperation(let function, let descriptiveValue):
-                accumulator = function()
-                descriptionAccumulator = descriptiveValue
-            case .UnaryOperation(let function, let descriptionFunction):
-                accumulator = function(accumulator)
-                descriptionAccumulator = descriptionFunction(descriptionAccumulator)
-            case .BinaryOperation(let function, let descriptionFunction, let precedence):
-                executePendingBinaryOperation()
-                if currentPrecedence < precedence {
-                    descriptionAccumulator = "(" + descriptionAccumulator + ")"
-                }
-                currentPrecedence = precedence
-                pending = PendingBinaryOperationInfo(binaryFunction: function, firstOperand: accumulator,
-                                                     descriptionFunction: descriptionFunction, descriptionOperand: descriptionAccumulator)
-            case .Equals:
-                executePendingBinaryOperation()
-            }
-        }
-    }
-    
-    func undo() {
-        guard internalProgram.count > 0 else { return }
-        internalProgram.removeLast()
-        program = internalProgram
-    }
-    
-    private func executePendingBinaryOperation() {
-        if pending != nil {
-            accumulator = pending!.binaryFunction(pending!.firstOperand, accumulator)
-            descriptionAccumulator = pending!.descriptionFunction(pending!.descriptionOperand, descriptionAccumulator)
-            pending = nil
-        }
-    }
-    
-    
     private var pending: PendingBinaryOperationInfo?
+    
+
+    
+    var result: Double {
+        get {
+            return accumulator
+        }
+    }
+    
     var isOperationPending: Bool{
         return pending != nil
     }
@@ -151,6 +100,80 @@ class CalculatorBrain {
         }
     }
     
+    var description: String {
+        get {
+            if pending == nil {
+                return descriptionAccumulator
+            } else {
+                return pending!.descriptionFunction(pending!.descriptionOperand,
+                                                    pending!.descriptionOperand != descriptionAccumulator ? descriptionAccumulator : "")
+            }
+        }
+    }
+    
+    var variableValue = [String:Double]()
+    
+    func setOperand(variableName: String) {
+        performOperation(variableName)
+    }
+    
+    func recalculate(){
+
+        let oldProgram = internalProgram
+        clear()
+        program = oldProgram
+    }
+    
+    func setOperand(operand: Double) {
+        accumulator = operand
+        internalProgram.append(operand)
+        
+        descriptionAccumulator = String(format:"%g", operand)
+    }
+    
+    func performOperation(symbol: String) {
+        internalProgram.append(symbol)
+        if let operation = operations[symbol] {
+            switch operation {
+            case .Constant(let value):
+                accumulator = value
+                descriptionAccumulator = symbol
+            case .NullaryOperation(let function, let descriptiveValue):
+                accumulator = function()
+                descriptionAccumulator = descriptiveValue
+            case .UnaryOperation(let function, let descriptionFunction):
+                accumulator = function(accumulator)
+                descriptionAccumulator = descriptionFunction(descriptionAccumulator)
+            case .BinaryOperation(let function, let descriptionFunction, let precedence):
+                executePendingBinaryOperation()
+                if currentPrecedence < precedence {
+                    descriptionAccumulator = "(" + descriptionAccumulator + ")"
+                }
+                currentPrecedence = precedence
+                pending = PendingBinaryOperationInfo(binaryFunction: function, firstOperand: accumulator,
+                                                     descriptionFunction: descriptionFunction, descriptionOperand: descriptionAccumulator)
+            case .Equals:
+                executePendingBinaryOperation()
+            }
+        }
+        accumulator = variableValue[symbol] ?? 0
+        descriptionAccumulator = symbol
+    }
+    
+    func undo() {
+        guard internalProgram.count > 0 else { return }
+        internalProgram.removeLast()
+        program = internalProgram
+    }
+    
+    private func executePendingBinaryOperation() {
+        if pending != nil {
+            accumulator = pending!.binaryFunction(pending!.firstOperand, accumulator)
+            descriptionAccumulator = pending!.descriptionFunction(pending!.descriptionOperand, descriptionAccumulator)
+            pending = nil
+        }
+    }
+    
     func clear() {
         accumulator = 0
         pending = nil
@@ -163,11 +186,5 @@ class CalculatorBrain {
         var firstOperand: Double
         var descriptionFunction: (String, String) -> String
         var descriptionOperand: String
-    }
-    
-    var result: Double {
-        get {
-            return accumulator
-        }
     }
 }

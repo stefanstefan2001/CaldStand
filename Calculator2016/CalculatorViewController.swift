@@ -49,8 +49,22 @@ class CalculatorViewController: UIViewController {
         
     }
     
+    @IBAction private func setVariable() {
+        brain.variableValue["M"] = displayValue
+        brain.recalculate()
+        displayValue = brain.result
+        descriptionLabel.text = brainDescription
+        userIsInTheMiddleOfTyping = false
+    }
+    
+    @IBAction func pushVariable() {
+        brain.setOperand("M")
+    }
+    
+    
     @IBAction private func clear() {
         brain.clear()
+        brain.variableValue["M"] = 0
         displayValue = 0
         descriptionLabel.text = " "
         userIsInTheMiddleOfTyping = false

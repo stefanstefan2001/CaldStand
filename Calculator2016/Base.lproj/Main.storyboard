@@ -67,11 +67,19 @@
                                                         <rect key="frame" x="228" y="0.0" width="104" height="71"/>
                                                         <color key="backgroundColor" red="0.85811298069999997" green="0.85811298069999997" blue="0.85811298069999997" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                                        <state key="normal" title="→M"/>
+                                                        <connections>
+                                                            <action selector="setVariable" destination="BYZ-38-t0r" eventType="touchUpInside" id="stM-x3-uRy"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lxb-tU-lRD">
                                                         <rect key="frame" x="342" y="0.0" width="104" height="71"/>
                                                         <color key="backgroundColor" red="0.85811298069999997" green="0.85811298069999997" blue="0.85811298069999997" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                                        <state key="normal" title="M"/>
+                                                        <connections>
+                                                            <action selector="pushVariable" destination="BYZ-38-t0r" eventType="touchUpInside" id="fnV-tE-0Ro"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XlV-dv-lPU">
                                                         <rect key="frame" x="456" y="0.0" width="104" height="71"/>
