@@ -27,6 +27,8 @@ class CalculatorViewController: UIViewController {
         }
     }
     
+    private var equalsWasJustUsed = false
+    
     private var displayValue: Double?{
         get{
             return Double(display.text!)
@@ -45,6 +47,9 @@ class CalculatorViewController: UIViewController {
         if brain.isOperationPending{
             description += " ..."
         }
+        if equalsWasJustUsed{
+            description += " ="
+        }
         return description
         
     }
@@ -52,14 +57,13 @@ class CalculatorViewController: UIViewController {
     @IBAction private func setVariable() {
         brain.variableValue["M"] = displayValue
         brain.recalculate()
-        displayValue = brain.result
-        descriptionLabel.text = brainDescription
         userIsInTheMiddleOfTyping = false
+        updateUI()
     }
     
     @IBAction func pushVariable() {
         brain.setOperand("M")
-        descriptionLabel.text  = brainDescription
+        updateUI()
     }
     
     
@@ -86,7 +90,7 @@ class CalculatorViewController: UIViewController {
             brain.undo()
             displayValue = brain.result
             descriptionLabel.text = brainDescription
-
+            
         }
     }
     
@@ -99,15 +103,18 @@ class CalculatorViewController: UIViewController {
         }
         
         if let mathematicalSymbol = sender.currentTitle{
+            equalsWasJustUsed = false
             brain.performOperation(mathematicalSymbol)
-            
-            descriptionLabel.text = brainDescription
-            if mathematicalSymbol == "=" {
-                descriptionLabel.text! += " ="
+            if mathematicalSymbol == "="{
+                equalsWasJustUsed = true
             }
         }
+        updateUI()
         
+    }
+    
+    private func updateUI(){
         displayValue = brain.result
-        
+        descriptionLabel.text = brainDescription
     }
 }
