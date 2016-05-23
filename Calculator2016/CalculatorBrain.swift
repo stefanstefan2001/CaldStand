@@ -120,13 +120,17 @@ class CalculatorBrain {
         }
     }
     
-    var variableValue = [String:Double]()
+    var variableValue = [String:Double](){
+        didSet{
+            recalculate()
+        }
+    }
     
     func setOperand(variableName: String) {
         performOperation(variableName)
     }
     
-    func recalculate(){
+    private func recalculate(){
         
         let oldProgram = internalProgram
         clear()
@@ -182,7 +186,7 @@ class CalculatorBrain {
                 descriptionAccumulator = descriptiveValue
             case .UnaryOperation(let function, let descriptionFunction,let errorFunc):
                 if errorFunc != nil {
-                   try errorFunc!(accumulator)
+                    try errorFunc!(accumulator)
                 }
                 accumulator = function(accumulator)
                 descriptionAccumulator = descriptionFunction(descriptionAccumulator)

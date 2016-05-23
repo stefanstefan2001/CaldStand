@@ -56,13 +56,12 @@ class CalculatorViewController: UIViewController {
     
     @IBAction private func setVariable() {
         brain.variableValue["M"] = displayValue
-        brain.recalculate()
         userIsInTheMiddleOfTyping = false
         equalsWasJustUsed = false
         updateUI()
     }
     
-    @IBAction func pushVariable() {
+    @IBAction private func pushVariable() {
         brain.setOperand("M")
         updateUI()
     }
