@@ -59,6 +59,7 @@ class CalculatorViewController: UIViewController {
     
     @IBAction func pushVariable() {
         brain.setOperand("M")
+        descriptionLabel.text  = brainDescription
     }
     
     

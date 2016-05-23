@@ -69,7 +69,7 @@ class CalculatorBrain {
     
     private var pending: PendingBinaryOperationInfo?
     
-
+    
     
     var result: Double {
         get {
@@ -118,7 +118,7 @@ class CalculatorBrain {
     }
     
     func recalculate(){
-
+        
         let oldProgram = internalProgram
         clear()
         program = oldProgram
@@ -155,9 +155,10 @@ class CalculatorBrain {
             case .Equals:
                 executePendingBinaryOperation()
             }
+        }else{
+            accumulator = variableValue[symbol] ?? 0
+            descriptionAccumulator = symbol
         }
-        accumulator = variableValue[symbol] ?? 0
-        descriptionAccumulator = symbol
     }
     
     func undo() {
