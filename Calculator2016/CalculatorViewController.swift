@@ -103,16 +103,22 @@ class CalculatorViewController: UIViewController {
             }
             userIsInTheMiddleOfTyping = false
         }
-        
-        if let mathematicalSymbol = sender.currentTitle{
-            equalsWasJustUsed = false
-            brain.performOperation(mathematicalSymbol)
-            if mathematicalSymbol == "="{
-                equalsWasJustUsed = true
+        do{
+            if let mathematicalSymbol = sender.currentTitle{
+                equalsWasJustUsed = false
+                try brain.performOperationAndReportErrors(mathematicalSymbol)
+                if mathematicalSymbol == "="{
+                    equalsWasJustUsed = true
+                }
             }
+            updateUI()
+        }catch Error.SquareRootOfNegativeNumber{
+            display.text = "Square Root of Negative Number"
+        }catch Error.DivisionByZero{
+            display.text = "Division by Zero"
+        }catch{
+            display.text = "Something went wrong"
         }
-        updateUI()
-        
     }
     
     private func updateUI(){
