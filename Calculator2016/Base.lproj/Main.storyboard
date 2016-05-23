@@ -359,7 +359,7 @@
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ed1-RY-p1s">
                                                         <rect key="frame" x="489" y="1" width="71" height="70"/>
-                                                        <color key="backgroundColor" red="0.90980392160000001" green="0.41568627450000001" blue="0.15686274510000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                                         <state key="normal" title="−">
                                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -441,7 +441,7 @@
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R5f-qy-AgP">
                                                         <rect key="frame" x="489" y="0.0" width="71" height="71"/>
-                                                        <color key="backgroundColor" red="0.90980392160000001" green="0.41568627450000001" blue="0.15686274510000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                                         <state key="normal" title="+">
                                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
