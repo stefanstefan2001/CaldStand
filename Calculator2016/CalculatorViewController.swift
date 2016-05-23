@@ -58,6 +58,7 @@ class CalculatorViewController: UIViewController {
         brain.variableValue["M"] = displayValue
         brain.recalculate()
         userIsInTheMiddleOfTyping = false
+        equalsWasJustUsed = false
         updateUI()
     }
     
@@ -73,6 +74,7 @@ class CalculatorViewController: UIViewController {
         displayValue = 0
         descriptionLabel.text = " "
         userIsInTheMiddleOfTyping = false
+        equalsWasJustUsed = false
     }
     
     @IBAction private func backspace() {
@@ -88,8 +90,8 @@ class CalculatorViewController: UIViewController {
             }
         }else{
             brain.undo()
-            displayValue = brain.result
-            descriptionLabel.text = brainDescription
+            equalsWasJustUsed = false
+            updateUI()
             
         }
     }
