@@ -219,7 +219,7 @@ class CalculatorBrain {
     private func executePendingBinaryOperationWithErrors() throws {
         if pending != nil {
             if let errorFunc = pending?.errorFunction{
-                try errorFunc(accumulator,pending!.firstOperand)
+                try errorFunc(pending!.firstOperand,accumulator)
             }
             accumulator = pending!.binaryFunction(pending!.firstOperand, accumulator)
             descriptionAccumulator = pending!.descriptionFunction(pending!.descriptionOperand, descriptionAccumulator)

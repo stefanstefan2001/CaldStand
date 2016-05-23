@@ -114,10 +114,13 @@ class CalculatorViewController: UIViewController {
             updateUI()
         }catch Error.SquareRootOfNegativeNumber{
             display.text = "Square Root of Negative Number"
+            brain.clear()
         }catch Error.DivisionByZero{
             display.text = "Division by Zero"
+            brain.clear()
         }catch{
             display.text = "Something went wrong"
+            brain.clear()
         }
     }
     
