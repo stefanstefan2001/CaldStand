@@ -141,7 +141,10 @@ class CalculatorBrain {
         accumulator = operand
         internalProgram.append(operand)
         
-        descriptionAccumulator = String(format:"%g", operand)
+        let numberFormatter = NSNumberFormatter()
+        numberFormatter.maximumFractionDigits = 6
+        numberFormatter.minimumIntegerDigits = 1
+        descriptionAccumulator = numberFormatter.stringFromNumber(operand)!
     }
     
     func performOperation(symbol: String) {
