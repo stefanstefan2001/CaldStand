@@ -15,11 +15,11 @@ class CalculatorViewController: UIViewController {
     @IBOutlet private weak var descriptionLabel: UILabel!
     @IBOutlet private weak var display: UILabel!
     
-    @IBAction private func touchDigit(sender: UIButton) {
+    @IBAction private func touchDigit(_ sender: UIButton) {
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTyping{
             // If the user taps the period and there is a period in the display then do nothing
-            if (digit == ".") && (display.text?.rangeOfString(".") != nil ) { return }
+            if (digit == ".") && (display.text?.range(of: ".") != nil ) { return }
             display.text! += digit
         }else{
             display.text = digit
@@ -33,10 +33,10 @@ class CalculatorViewController: UIViewController {
         get{
             return Double(display.text!)
         }set{
-            let numberFormatter = NSNumberFormatter()
+            let numberFormatter = NumberFormatter()
             numberFormatter.maximumFractionDigits = 6
             numberFormatter.minimumIntegerDigits = 1
-            display.text = numberFormatter.stringFromNumber(newValue!)
+            display.text = numberFormatter.string(from: newValue!)
         }
     }
     
@@ -95,7 +95,7 @@ class CalculatorViewController: UIViewController {
         }
     }
     
-    @IBAction private func performOperation(sender: UIButton) {
+    @IBAction private func performOperation(_ sender: UIButton) {
         if userIsInTheMiddleOfTyping{
             if let value = displayValue{
                 brain.setOperand(value)
@@ -111,10 +111,10 @@ class CalculatorViewController: UIViewController {
                 }
             }
             updateUI()
-        }catch Error.SquareRootOfNegativeNumber{
+        }catch Error.squareRootOfNegativeNumber{
             display.text = "Square Root of Negative Number"
             brain.clear()
-        }catch Error.DivisionByZero{
+        }catch Error.divisionByZero{
             display.text = "Division by Zero"
             brain.clear()
         }catch{

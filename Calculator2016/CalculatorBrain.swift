@@ -8,16 +8,16 @@
 
 import Foundation
 
-func factorial(op1: Double) -> Double {
+func factorial(_ op1: Double) -> Double {
     if (op1 <= 1) {
         return 1
     }
     return op1 * factorial(op1 - 1)
 }
 
-enum Error: ErrorType{
-    case SquareRootOfNegativeNumber
-    case DivisionByZero
+enum Error: ErrorProtocol{
+    case squareRootOfNegativeNumber
+    case divisionByZero
 }
 
 class CalculatorBrain {
@@ -35,43 +35,43 @@ class CalculatorBrain {
     }
     
     private var operations: Dictionary<String,Operation> = [
-        "π" : Operation.Constant(M_PI),
-        "e" : Operation.Constant(M_E),
-        "%": Operation.UnaryOperation({$0 / 100}, {"(" + $0 + ")%"},nil),
-        "ᐩ/-" : Operation.UnaryOperation({ -$0 }, { "-(" + $0 + ")"},nil),
-        "²√" : Operation.UnaryOperation(sqrt, { "²√(" + $0 + ")"}, {if $0 < 0{ throw Error.SquareRootOfNegativeNumber }}),
-        "³√" : Operation.UnaryOperation(cbrt, { "³√(" + $0 + ")"},nil),
-        "x²" : Operation.UnaryOperation({ pow($0, 2) }, { "(" + $0 + ")²"},nil),
-        "x³" : Operation.UnaryOperation({ pow($0, 3) }, { "(" + $0 + ")³"},nil),
-        "x⁻¹" : Operation.UnaryOperation({ 1 / $0 }, { "(" + $0 + ")⁻¹"},nil),
-        "sin" : Operation.UnaryOperation(sin, { "sin(" + $0 + ")"},nil),
-        "2ˣ" : Operation.UnaryOperation({pow(2, $0)}, { "2^" + $0},nil),
-        "cos" : Operation.UnaryOperation(cos, { "cos(" + $0 + ")"},nil),
-        "tan" : Operation.UnaryOperation(tan, { "tan(" + $0 + ")"},nil),
-        "sinh" : Operation.UnaryOperation(sinh, { "sinh(" + $0 + ")"},nil),
-        "cosh" : Operation.UnaryOperation(cosh, { "cosh(" + $0 + ")"},nil),
-        "tanh" : Operation.UnaryOperation(tanh, { "tanh(" + $0 + ")"},nil),
-        "ln" : Operation.UnaryOperation(log, { "ln(" + $0 + ")"},nil),
-        "log₁₀" : Operation.UnaryOperation(log10, { "log(" + $0 + ")"},nil),
-        "eˣ" : Operation.UnaryOperation(exp, { "e^(" + $0 + ")"},nil),
-        "10ˣ" : Operation.UnaryOperation({ pow(10, $0) }, { "10^(" + $0 + ")"},nil),
-        "x!" : Operation.UnaryOperation(factorial, { "(" + $0 + ")!"},nil),
-        "×" : Operation.BinaryOperation(*, { $0 + " × " + $1 }, 1,nil),
-        "÷" : Operation.BinaryOperation(/, { $0 + " ÷ " + $1 }, 1, {if $1 == 0 { throw Error.DivisionByZero }}),
-        "+" : Operation.BinaryOperation(+, { $0 + " + " + $1 }, 0,nil),
-        "−" : Operation.BinaryOperation(-, { $0 + " - " + $1 }, 0,nil),
-        "xʸ" : Operation.BinaryOperation(pow, { $0 + " ^ " + $1 }, 2,nil),
-        "yˣ" : Operation.BinaryOperation({pow($1, $0)}, { $1 + " ^ " + $0 }, 2,nil),
-        "rand" : Operation.NullaryOperation(drand48, "rand()"),
-        "=" : Operation.Equals
+        "π" : Operation.constant(M_PI),
+        "e" : Operation.constant(M_E),
+        "%": Operation.unaryOperation({$0 / 100}, {"(" + $0 + ")%"},nil),
+        "ᐩ/-" : Operation.unaryOperation({ -$0 }, { "-(" + $0 + ")"},nil),
+        "²√" : Operation.unaryOperation(sqrt, { "²√(" + $0 + ")"}, {if $0 < 0{ throw Error.squareRootOfNegativeNumber }}),
+        "³√" : Operation.unaryOperation(cbrt, { "³√(" + $0 + ")"},nil),
+        "x²" : Operation.unaryOperation({ pow($0, 2) }, { "(" + $0 + ")²"},nil),
+        "x³" : Operation.unaryOperation({ pow($0, 3) }, { "(" + $0 + ")³"},nil),
+        "x⁻¹" : Operation.unaryOperation({ 1 / $0 }, { "(" + $0 + ")⁻¹"},nil),
+        "sin" : Operation.unaryOperation(sin, { "sin(" + $0 + ")"},nil),
+        "2ˣ" : Operation.unaryOperation({pow(2, $0)}, { "2^" + $0},nil),
+        "cos" : Operation.unaryOperation(cos, { "cos(" + $0 + ")"},nil),
+        "tan" : Operation.unaryOperation(tan, { "tan(" + $0 + ")"},nil),
+        "sinh" : Operation.unaryOperation(sinh, { "sinh(" + $0 + ")"},nil),
+        "cosh" : Operation.unaryOperation(cosh, { "cosh(" + $0 + ")"},nil),
+        "tanh" : Operation.unaryOperation(tanh, { "tanh(" + $0 + ")"},nil),
+        "ln" : Operation.unaryOperation(log, { "ln(" + $0 + ")"},nil),
+        "log₁₀" : Operation.unaryOperation(log10, { "log(" + $0 + ")"},nil),
+        "eˣ" : Operation.unaryOperation(exp, { "e^(" + $0 + ")"},nil),
+        "10ˣ" : Operation.unaryOperation({ pow(10, $0) }, { "10^(" + $0 + ")"},nil),
+        "x!" : Operation.unaryOperation(factorial, { "(" + $0 + ")!"},nil),
+        "×" : Operation.binaryOperation(*, { $0 + " × " + $1 }, 1,nil),
+        "÷" : Operation.binaryOperation(/, { $0 + " ÷ " + $1 }, 1, {if $1 == 0 { throw Error.divisionByZero }}),
+        "+" : Operation.binaryOperation(+, { $0 + " + " + $1 }, 0,nil),
+        "−" : Operation.binaryOperation(-, { $0 + " - " + $1 }, 0,nil),
+        "xʸ" : Operation.binaryOperation(pow, { $0 + " ^ " + $1 }, 2,nil),
+        "yˣ" : Operation.binaryOperation({pow($1, $0)}, { $1 + " ^ " + $0 }, 2,nil),
+        "rand" : Operation.nullaryOperation(drand48, "rand()"),
+        "=" : Operation.equals
     ]
     
     private enum Operation {
-        case Constant(Double)
-        case UnaryOperation((Double) -> Double, (String) -> String,(Double throws -> ())?)
-        case BinaryOperation((Double, Double) -> Double, (String, String) -> String, Int,((Double,Double) throws -> ())?)
-        case NullaryOperation(() -> Double, String)
-        case Equals
+        case constant(Double)
+        case unaryOperation((Double) -> Double, (String) -> String,((Double) throws -> ())?)
+        case binaryOperation((Double, Double) -> Double, (String, String) -> String, Int,((Double,Double) throws -> ())?)
+        case nullaryOperation(() -> Double, String)
+        case equals
     }
     
     private var currentPrecedence = Int.max
@@ -126,7 +126,7 @@ class CalculatorBrain {
         }
     }
     
-    func setOperand(variableName: String) {
+    func setOperand(_ variableName: String) {
         performOperation(variableName)
     }
     
@@ -137,30 +137,30 @@ class CalculatorBrain {
         program = oldProgram
     }
     
-    func setOperand(operand: Double) {
+    func setOperand(_ operand: Double) {
         accumulator = operand
         internalProgram.append(operand)
         
-        let numberFormatter = NSNumberFormatter()
+        let numberFormatter = NumberFormatter()
         numberFormatter.maximumFractionDigits = 6
         numberFormatter.minimumIntegerDigits = 1
-        descriptionAccumulator = numberFormatter.stringFromNumber(operand)!
+        descriptionAccumulator = numberFormatter.string(from: operand)!
     }
     
-    func performOperation(symbol: String) {
+    func performOperation(_ symbol: String) {
         internalProgram.append(symbol)
         if let operation = operations[symbol] {
             switch operation {
-            case .Constant(let value):
+            case .constant(let value):
                 accumulator = value
                 descriptionAccumulator = symbol
-            case .NullaryOperation(let function, let descriptiveValue):
+            case .nullaryOperation(let function, let descriptiveValue):
                 accumulator = function()
                 descriptionAccumulator = descriptiveValue
-            case .UnaryOperation(let function, let descriptionFunction,_):
+            case .unaryOperation(let function, let descriptionFunction,_):
                 accumulator = function(accumulator)
                 descriptionAccumulator = descriptionFunction(descriptionAccumulator)
-            case .BinaryOperation(let function, let descriptionFunction, let precedence,_):
+            case .binaryOperation(let function, let descriptionFunction, let precedence,_):
                 executePendingBinaryOperation()
                 if currentPrecedence < precedence {
                     descriptionAccumulator = "(" + descriptionAccumulator + ")"
@@ -168,7 +168,7 @@ class CalculatorBrain {
                 currentPrecedence = precedence
                 pending = PendingBinaryOperationInfo(binaryFunction: function, firstOperand: accumulator,
                                                      descriptionFunction: descriptionFunction, descriptionOperand: descriptionAccumulator,errorFunction: nil)
-            case .Equals:
+            case .equals:
                 executePendingBinaryOperation()
             }
         }else{
@@ -177,23 +177,23 @@ class CalculatorBrain {
         }
     }
     
-    func performOperationAndReportErrors(symbol: String) throws {
+    func performOperationAndReportErrors(_ symbol: String) throws {
         internalProgram.append(symbol)
         if let operation = operations[symbol] {
             switch operation {
-            case .Constant(let value):
+            case .constant(let value):
                 accumulator = value
                 descriptionAccumulator = symbol
-            case .NullaryOperation(let function, let descriptiveValue):
+            case .nullaryOperation(let function, let descriptiveValue):
                 accumulator = function()
                 descriptionAccumulator = descriptiveValue
-            case .UnaryOperation(let function, let descriptionFunction,let errorFunc):
+            case .unaryOperation(let function, let descriptionFunction,let errorFunc):
                 if errorFunc != nil {
                     try errorFunc!(accumulator)
                 }
                 accumulator = function(accumulator)
                 descriptionAccumulator = descriptionFunction(descriptionAccumulator)
-            case .BinaryOperation(let function, let descriptionFunction, let precedence,let errorFunc):
+            case .binaryOperation(let function, let descriptionFunction, let precedence,let errorFunc):
                 try executePendingBinaryOperationWithErrors()
                 if currentPrecedence < precedence {
                     descriptionAccumulator = "(" + descriptionAccumulator + ")"
@@ -201,7 +201,7 @@ class CalculatorBrain {
                 currentPrecedence = precedence
                 pending = PendingBinaryOperationInfo(binaryFunction: function, firstOperand: accumulator,
                                                      descriptionFunction: descriptionFunction, descriptionOperand: descriptionAccumulator,errorFunction: errorFunc)
-            case .Equals:
+            case .equals:
                 try executePendingBinaryOperationWithErrors()
             }
         }else{
